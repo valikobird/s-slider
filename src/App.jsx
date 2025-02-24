@@ -1,5 +1,15 @@
+import { useState } from 'react';
+import { longList } from './data';
+import Slider from './components/Slider';
+
 const App = () => {
-  return <h2>Slider</h2>;
+  const [data, setData] = useState(longList);
+
+  return (
+    <section className='sliderContainer'>
+      <Slider sliderData={data} />
+    </section>
+  );
 };
 
 export default App;
