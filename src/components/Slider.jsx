@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import Slide from './Slide';
-import { longList } from '../data';
+import { list } from '../data';
 
 const Slider = () => {
-  const [data, setData] = useState(longList);
+  const [data, setData] = useState(list);
   const [activeIndex, setActiveIndex] = useState(0);
   const [showPrevButton, setShowPrevButton] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
