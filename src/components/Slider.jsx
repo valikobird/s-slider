@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import Slide from './Slide';
+import { longList } from '../data';
 
-const Slider = ({ sliderData }) => {
+const Slider = () => {
+  const [data, setData] = useState(longList);
   const [activeIndex, setActiveIndex] = useState(0);
   const [showPrevButton, setShowPrevButton] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
@@ -17,33 +19,47 @@ const Slider = ({ sliderData }) => {
   }, []);
 
   useEffect(() => {
-    setShowPrevButton(sliderData.length > 1);
-    setShowNextButton(sliderData.length > 1);
-  }, [sliderData]);
+    setShowPrevButton(data.length > 1);
+    setShowNextButton(data.length > 1);
+  }, [data]);
+
+  useEffect(() => {
+    const sliderId = setInterval(() => {
+      nextSlide();
+    }, 2000);
+    return () => {
+      clearInterval(sliderId);
+    };
+  }, [activeIndex]);
 
   const prevSlide = () => {
     setActiveIndex(
-      (currentIndex) =>
-        (currentIndex + sliderData.length - 1) % sliderData.length
+      (currentIndex) => (currentIndex + data.length - 1) % data.length
     );
   };
 
   const nextSlide = () => {
-    setActiveIndex((currentIndex) => (currentIndex + 1) % sliderData.length);
+    setActiveIndex((currentIndex) => (currentIndex + 1) % data.length);
   };
 
-  const slideDetails = sliderData[activeIndex];
-
   return (
-    <div className='slider'>
+    <section className='slider'>
+      {data.map((slideDetails, slideIndex) => {
+        return (
+          <Slide
+            {...slideDetails}
+            relativeIndex={slideIndex - activeIndex}
+            key={slideDetails.id}
+          />
+        );
+      })}
       {showPrevButton && (
-        <FaAngleLeft className='navButton' onClick={() => prevSlide()} />
+        <FaAngleLeft className='navButton prev' onClick={() => prevSlide()} />
       )}
-      <Slide {...slideDetails} />
       {showNextButton && (
-        <FaAngleRight className='navButton' onClick={() => nextSlide()} />
+        <FaAngleRight className='navButton next' onClick={() => nextSlide()} />
       )}
-    </div>
+    </section>
   );
 };
 
